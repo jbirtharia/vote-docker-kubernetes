@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-pod
+  labels:
+    name: redis-pod
+    app: demo-voting-app
+spec:
+  containers:
+    # - args:
+    #     - redis-server
+    #     - --appendonly
+    #     - "yes"
+    - image: redis:latest
+      name: redis-server
+      ports:
+        - containerPort: 6379
+          protocol: TCP
+  #     volumeMounts:
+  #       - mountPath: /data
+  #         name: redis-data
+  # restartPolicy: Always
+  # volumes:
+  #   - name: redis-data
+  #     persistentVolumeClaim:
+  #       claimName: redis-data

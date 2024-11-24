@@ -1,0 +1,6 @@
+com/worker/node/WorkerNodeApplication.class
+com/worker/node/configuration/RedisConfiguration.class
+com/worker/node/dto/Votes.class
+com/worker/node/entities/VoteEntity.class
+com/worker/node/service/VoteService.class
+com/worker/node/service/RedisService.class

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-dep
+  labels:
+    name: mysql-dep
+    app: demo-voting-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mysql-pod
+      app: demo-voting-app
+  template:
+    metadata:
+      name: mysql-pod
+      labels:
+        name: mysql-pod
+        app: demo-voting-app
+    spec:
+      containers:
+      - env:
+          - name: MYSQL_DATABASE
+            value: DB
+          - name: MYSQL_PASSWORD
+            value: dbeaver
+          - name: MYSQL_ROOT_PASSWORD
+            value: root
+          - name: MYSQL_USER
+            value: dbeaver
+        image: mysql:latest
+        name: vote-app-db
+        ports:
+          - containerPort: 3306
+            protocol: TCP

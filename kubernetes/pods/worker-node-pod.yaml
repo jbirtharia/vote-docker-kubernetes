@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: worker-node-pod
+  labels:
+    name: worker-node-pod
+    app: demo-voting-app
+spec:
+  containers:
+    - env:
+        - name: RDS_DB_NAME
+          value: DB
+        - name: RDS_HOSTNAME
+          value: mysql
+        - name: RDS_PASSWORD
+          value: dbeaver
+        - name: RDS_PORT
+          value: "3306"
+        - name: RDS_USERNAME
+          value: dbeaver
+        - name: REDIS_HOSTNAME
+          value: redis
+        - name: REDIS_PORT
+          value: "6379"
+      image: jbirtharia/worker-node:latest
+      name: worker-node
+  restartPolicy: Always

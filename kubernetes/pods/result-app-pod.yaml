@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: result-app-pod
+  labels:
+    name: result-app-pod
+    app: demo-voting-app
+spec:
+  containers:
+    - env:
+        - name: DB_HOST
+          value: mysql
+        - name: DB_NAME
+          value: DB
+        - name: DB_PASSWORD
+          value: dbeaver
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          value: dbeaver
+      image: jbirtharia/result-app:latest
+      name: result-app
+      ports:
+        - containerPort: 4000
+          protocol: TCP
+  restartPolicy: Always

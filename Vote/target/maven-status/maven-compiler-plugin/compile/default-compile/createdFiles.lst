@@ -1,0 +1,5 @@
+com/vote/configuration/RedisConfiguration.class
+com/vote/controllers/VoteController.class
+com/vote/service/RedisService.class
+com/vote/entities/Votes.class
+com/vote/VoteApplication.class

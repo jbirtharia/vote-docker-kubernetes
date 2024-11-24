@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>Cats vs Dogs!</title>
+    <base href="/index.html">
+    <meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
+    <meta name="keywords" content="docker-compose, docker, stack">
+    <meta name="author" content="Tutum dev team">
+    <link rel="stylesheet" th:href="@{/stylesheets/style.css}">
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css}">
+  </head>
+  <body>
+    <div id="content-container">
+      <div id="content-container-center">
+        <h3>Cats vs Dogs!</h3>
+        <form id="choice" name='form' method="POST" th:action="@{/submit}">
+          <button id="a" type="submit" name="vote" class="a" value="cats">Cats</button>
+          <button id="b" type="submit" name="vote" class="b" value="dogs">Dogs</button>
+        </form>
+        <div id="tip">
+          (Tip: you can change your vote)
+        </div>
+        <div id="hostname">
+          Processed by container ID {{hostname}}
+        </div>
+      </div>
+    </div>
+    <script th:src="@{http://code.jquery.com/jquery-latest.min.js}"></script>
+    <script th:src="@{//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js}"></script>
+
+  </body>
+</html>

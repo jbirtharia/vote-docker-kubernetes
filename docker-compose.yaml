@@ -1,0 +1,102 @@
+version: '3.7'
+
+services:
+
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    ports: 
+      - "6379:6379"
+    volumes:
+      - redis-data:/data # Persist Redis data to the volume
+    command: [ "redis-server", "--appendonly", "yes" ] # Enable AOF persistence
+    expose:
+      - 6379
+    networks:
+      - vote-app
+
+  vote:
+    image: vote-app
+    container_name: vote-app
+    build:
+      context: ./Vote
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "5005:5005"
+    depends_on:
+      - redis
+      - mysql
+    environment:
+     REDIS_HOSTNAME: redis
+     REDIS_PORT: 6379
+    networks:
+      - vote-app
+
+  worker:
+    image: worker-node
+    container_name: worker-node
+    build:
+      context:  ./worker-node
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+      - mysql
+    environment:
+      RDS_HOSTNAME: mysql
+      RDS_PORT: 3306
+      RDS_DB_NAME: DB
+      RDS_USERNAME: dbeaver
+      RDS_PASSWORD: dbeaver
+      REDIS_HOSTNAME: redis
+      REDIS_PORT: 6379
+    networks:
+      - vote-app
+
+  result:
+    image: result-app
+    container_name: result-app
+    build:
+      context: ./result
+      dockerfile: Dockerfile
+    ports:
+      - "4000:4000"
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: DB
+      DB_USER: dbeaver
+      DB_PASSWORD: dbeaver
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - vote-app
+
+  mysql:
+    image: mysql:latest
+    container_name: vote-app-db
+    ports: 
+      - "3306:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: DB
+      MYSQL_USER: dbeaver
+      MYSQL_PASSWORD: dbeaver
+    volumes:
+     - mysql-database-data-volume:/var/lib/mysql
+    networks:
+      - vote-app
+
+volumes:
+  mysql-database-data-volume:
+  redis-data:
+
+networks:
+  vote-app:
+    driver: bridge

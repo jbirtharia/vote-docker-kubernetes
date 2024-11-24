@@ -1,0 +1,41 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mysql-pod
+  labels:
+    name: mysql-pod
+    app: demo-voting-app
+spec:
+  containers:
+    - env:
+        - name: MYSQL_DATABASE
+          value: DB
+        - name: MYSQL_PASSWORD
+          value: dbeaver
+        - name: MYSQL_ROOT_PASSWORD
+          value: root
+        - name: MYSQL_USER
+          value: dbeaver
+      image: mysql:latest
+      # livenessProbe:
+      #   exec:
+      #     command:
+      #       - mysqladmin
+      #       - ping
+      #       - -h
+      #       - localhost
+      #   failureThreshold: 3
+      #   periodSeconds: 10
+      #   timeoutSeconds: 5
+      name: vote-app-db
+      ports:
+        - containerPort: 3306
+          protocol: TCP
+      # volumeMounts:
+      #   - mountPath: /var/lib/mysql
+      #     name: mysql-database-data-volume
+  # restartPolicy: Always
+  # volumes:
+  #   - name: mysql-database-data-volume
+  #     persistentVolumeClaim:
+  #       claimName: mysql-database-data-volume
